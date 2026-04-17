@@ -96,7 +96,7 @@ main
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-username>/alarm-intruder-camera.git
+git clone https://github.com/kobbyob123/alarm-intruder-camera.git
 cd alarm-intruder-camera/python
 
 # 2. Install dependencies
