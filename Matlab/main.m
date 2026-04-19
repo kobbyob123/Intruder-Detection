@@ -22,3 +22,6 @@ figure;
 subplot(1,3,1); imshow(ref);       title('Reference');
 subplot(1,3,2); imshow(current);   title('Current');
 subplot(1,3,3); imshow(diff_img, []); title('Difference');
+
+% Apply Otsu Thresholding to binarize it 
+% (any noise in the image? must be fixed before applying otsu)
