@@ -142,7 +142,7 @@ This project draws on techniques covered throughout the TNM-A syllabus:
 ## Roadmap
 
 - [x] Project structure and README
-- [ ] Background subtraction (static averaging)
+- [x] Background subtraction (static averaging)
 - [ ] Otsu thresholding + morphological cleanup
 - [ ] Connected component / contour detection
 - [ ] Bounding box overlay and area measurement
