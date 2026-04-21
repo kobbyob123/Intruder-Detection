@@ -3,10 +3,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+# make sure you have the dependencies before running
+
 # Initialize webcam
 cam = cv2.VideoCapture(0)
 
 def capture_frame(cam):
+    """
+    a built in function to capture images
+    args:
+        cam: camera object
+    """
     ret, frame = cam.read()
     if not ret:
         raise RuntimeError("Failed to capture frame")
