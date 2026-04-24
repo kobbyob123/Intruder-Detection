@@ -76,6 +76,12 @@ The detection pipeline follows these stages:
 6. **Size measurement** — For each detected region, the system computes the bounding box dimensions and pixel area. If a calibration factor is set, these are converted to real-world units.
 7. **Alarm trigger** — If any object exceeds the minimum area threshold, the system plays an alarm sound.
 
+```
+> In a simple flow structure
+
+capture → grayscale → difference → threshold → morphology → connected components → size + alarm
+```
+
 ---
 
 ## Getting Started
