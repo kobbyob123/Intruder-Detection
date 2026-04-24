@@ -23,10 +23,20 @@ subplot(1,3,1); imshow(ref);       title('Reference');
 subplot(1,3,2); imshow(current);   title('Current');
 subplot(1,3,3); imshow(diff_img, []); title('Difference');
 
-% Apply Otsu Thresholding to binarize it 
-% (any noise in the image? must be fixed before applying otsu)
+% step 5: (clean up any noise before applying otsu) if possible or necessary
+
+% step 6: Apply Otsu Thresholding to binarize it 
+T = otsu(current);
+binary_mask = diff_img > T;
+
+% update your figure
+subplot(1,4,1); imshow(ref);             title('Reference');
+subplot(1,4,2); imshow(current);         title('Current');
+subplot(1,4,3); imshow(diff_img, []);    title('Difference');
+subplot(1,4,4); imshow(binary_mask);     title('Binary Mask');
+
+% Morphology Clean-Up
 
 
-
-% Turn of camera
+% Turn off camera
 clear cam
