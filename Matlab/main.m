@@ -6,13 +6,13 @@ cam = webcam;
 disp('Capturing reference frame in 3 seconds...');
 pause(3);
 ref = cam.snapshot;
-ref_gray = rgb2gray(ref);
+ref_gray = rgb_2_gray(ref);
 
 % Step 2: Robber here haha
 disp('New Object Here... capturing in 5 seconds');
 pause(5);
 current = cam.snapshot;
-current_gray = rgb2gray(current);
+current_gray = rgb_2_gray(current);
 
 % Step 3: Compute the absolute difference
 diff_img = imabsdiff(current_gray, ref_gray);
