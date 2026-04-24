@@ -15,13 +15,13 @@ current = cam.snapshot;
 current_gray = rgb_2_gray(current);
 
 % Step 3: Compute the absolute difference
-diff_img = imabsdiff(current_gray, ref_gray);
+diff_img = imabsdiff(ref_gray, current_gray);
 
 % Step 4: Display everything side by side
 figure;
-subplot(3,1,1); imshow(ref);       title('Reference');
-subplot(3,1,2); imshow(current);   title('Current');
-subplot(3,1,3); imshow(diff_img, []); title('Difference');
+subplot(1,3,1); imshow(ref);       title('Reference');
+subplot(1,3,2); imshow(current);   title('Current');
+subplot(1,3,3); imshow(diff_img, []); title('Difference');
 
 % Apply Otsu Thresholding to binarize it 
 % (any noise in the image? must be fixed before applying otsu)
