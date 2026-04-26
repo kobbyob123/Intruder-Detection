@@ -83,6 +83,23 @@ for k = 1:numel(intruders)
     display_img(y2, x1:x2, 3) = 0;
 end
 
+if numel(intruders) > 0
+    fprintf('ALARM — %d intruder(s) detected\n', numel(intruders));
+
+    for k = 1:numel(intruders)
+        fprintf('  Object %d: area=%d px, centroid=(%.1f, %.1f), bbox=[%d %d %d %d]\n', ...
+            k, ...
+            intruders(k).area, ...
+            intruders(k).centroid(1), intruders(k).centroid(2), ...
+            intruders(k).bbox(1), intruders(k).bbox(2), ...
+            intruders(k).bbox(3), intruders(k).bbox(4));
+    end
+
+    alarm_sound();
+else
+    fprintf('No intruders detected\n');
+end
+
 imshow(display_img);
 
 % Turn off camera
