@@ -2,61 +2,40 @@ clear; clc;
 
 cam = webcam;
 
-% Step 1: Capture the reference
+% Capture the reference
 disp('Capturing reference frame in 3 seconds...');
 pause(3);
 ref = cam.snapshot;
 ref_gray = rgb_2_gray(ref);
 
-% Step 2: Robber here haha
+% Capture Current
 disp('New Object Here... capturing in 5 seconds');
 pause(5);
 current = cam.snapshot;
 current_gray = rgb_2_gray(current);
 
-% Step 3: Compute the absolute difference
+% Compute the absolute difference
 diff_img = im_abs_diff(ref_gray, current_gray);
 
-% Step 4: Display everything side by side
-figure;
-subplot(1,3,1); imshow(ref);       title('Reference');
-subplot(1,3,2); imshow(current);   title('Current');
-subplot(1,3,3); imshow(diff_img, []); title('Difference');
-
-% step 5: (clean up any noise before applying otsu) if possible or necessary
-
-% step 6: Apply Otsu Thresholding to binarize it 
+% Apply Otsu Thresholding to binarize it 
 T = otsu(current);
 binary_mask = diff_img > T;
 
-% update your figure
-subplot(1,4,1); imshow(ref);             title('Reference');
-subplot(1,4,2); imshow(current);         title('Current');
-subplot(1,4,3); imshow(diff_img, []);    title('Difference');
-subplot(1,4,4); imshow(binary_mask);     title('Binary Mask');
-
 % Morphology Clean-Up
 se = ones(5, 5);  % 5x5 square structuring element — tune this
-
 clean_mask = morph_clean(binary_mask, se);
-
-subplot(1,5,1); imshow(ref);           title('Reference');
-subplot(1,5,2); imshow(current);       title('Current');
-subplot(1,5,3); imshow(diff_img,[]);   title('Difference');
-subplot(1,5,4); imshow(binary_mask);   title('Binary Mask');
-subplot(1,5,5); imshow(clean_mask);    title('Clean Mask');
 
 % Identify Components in Image
 [labels, n] = connected_components(clean_mask);
 objects = region_props(labels, n);
 
-% filter out noise — keep only objects above a minimum area
+% Filter out noise — keep only objects above a minimum area
 MIN_AREA = 500;  % tune this
 intruders = objects([objects.area] > MIN_AREA);
 
 fprintf('Detected %d intruder(s)\n', numel(intruders));
 
-% draw bounding boxes on a display copy
+% Draw bounding boxes on a display copy
 display_img = repmat(uint8(clean_mask) * 255, [1 1 3]);  % binary → RGB
 
 for k = 1:numel(intruders)
@@ -64,7 +43,6 @@ for k = 1:numel(intruders)
     x1 = bb(1); y1 = bb(2);
     x2 = bb(1) + bb(3) - 1;
     y2 = bb(2) + bb(4) - 1;
-
     % left edge
     display_img(y1:y2, x1, 1) = 255;
     display_img(y1:y2, x1, 2) = 0;
