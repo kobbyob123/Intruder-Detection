@@ -36,7 +36,43 @@ subplot(1,4,3); imshow(diff_img, []);    title('Difference');
 subplot(1,4,4); imshow(binary_mask);     title('Binary Mask');
 
 % Morphology Clean-Up
+se = ones(5, 5);  % 5x5 square structuring element — tune this
 
+clean_mask = morph_clean(binary_mask, se);
+
+subplot(1,5,1); imshow(ref);           title('Reference');
+subplot(1,5,2); imshow(current);       title('Current');
+subplot(1,5,3); imshow(diff_img,[]);   title('Difference');
+subplot(1,5,4); imshow(binary_mask);   title('Binary Mask');
+subplot(1,5,5); imshow(clean_mask);    title('Clean Mask');
+
+% Identify Components in Image
+[labels, n] = connected_components(clean_mask);
+objects = region_props(labels, n);
+
+% filter out noise — keep only objects above a minimum area
+MIN_AREA = 500;  % tune this
+intruders = objects([objects.area] > MIN_AREA);
+
+fprintf('Detected %d intruder(s)\n', numel(intruders));
+
+% draw bounding boxes on a display copy
+display_img = repmat(uint8(clean_mask) * 255, [1 1 3]);  % binary → RGB
+
+for k = 1:numel(intruders)
+    bb = intruders(k).bbox;  % [x, y, w, h]
+    x1 = bb(1); y1 = bb(2);
+    x2 = bb(1) + bb(3) - 1;
+    y2 = bb(2) + bb(4) - 1;
+
+    % draw rectangle edges by setting pixels directly — no insertShape
+    display_img(y1:y2, x1,   :) = repmat([255,0,0], [y2-y1+1, 1, 1]);  % left
+    display_img(y1:y2, x2,   :) = repmat([255,0,0], [y2-y1+1, 1, 1]);  % right
+    display_img(y1,    x1:x2, :) = repmat([255,0,0], [1, x2-x1+1, 1]); % top
+    display_img(y2,    x1:x2, :) = repmat([255,0,0], [1, x2-x1+1, 1]); % bottom
+end
+
+imshow(display_img);
 
 % Turn off camera
 clear cam
