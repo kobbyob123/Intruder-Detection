@@ -60,16 +60,27 @@ fprintf('Detected %d intruder(s)\n', numel(intruders));
 display_img = repmat(uint8(clean_mask) * 255, [1 1 3]);  % binary → RGB
 
 for k = 1:numel(intruders)
-    bb = intruders(k).bbox;  % [x, y, w, h]
+    bb = intruders(k).bbox;
     x1 = bb(1); y1 = bb(2);
     x2 = bb(1) + bb(3) - 1;
     y2 = bb(2) + bb(4) - 1;
 
-    % draw rectangle edges by setting pixels directly — no insertShape
-    display_img(y1:y2, x1,   :) = repmat([255,0,0], [y2-y1+1, 1, 1]);  % left
-    display_img(y1:y2, x2,   :) = repmat([255,0,0], [y2-y1+1, 1, 1]);  % right
-    display_img(y1,    x1:x2, :) = repmat([255,0,0], [1, x2-x1+1, 1]); % top
-    display_img(y2,    x1:x2, :) = repmat([255,0,0], [1, x2-x1+1, 1]); % bottom
+    % left edge
+    display_img(y1:y2, x1, 1) = 255;
+    display_img(y1:y2, x1, 2) = 0;
+    display_img(y1:y2, x1, 3) = 0;
+    % right edge
+    display_img(y1:y2, x2, 1) = 255;
+    display_img(y1:y2, x2, 2) = 0;
+    display_img(y1:y2, x2, 3) = 0;
+    % top edge
+    display_img(y1, x1:x2, 1) = 255;
+    display_img(y1, x1:x2, 2) = 0;
+    display_img(y1, x1:x2, 3) = 0;
+    % bottom edge
+    display_img(y2, x1:x2, 1) = 255;
+    display_img(y2, x1:x2, 2) = 0;
+    display_img(y2, x1:x2, 3) = 0;
 end
 
 imshow(display_img);
