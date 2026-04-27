@@ -18,7 +18,7 @@ current_gray = rgb_2_gray(current);
 diff_img = im_abs_diff(ref_gray, current_gray);
 
 % Apply Otsu Thresholding to binarize it 
-T = otsu(current);
+T = otsu(diff_img);
 binary_mask = diff_img > T;
 
 % Morphology Clean-Up
