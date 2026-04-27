@@ -33,10 +33,9 @@ objects = region_props(labels, n);
 MIN_AREA = 500;  % tune this
 intruders = objects([objects.area] > MIN_AREA);
 
-fprintf('Detected %d intruder(s)\n', numel(intruders));
-
 % Draw bounding boxes on a display copy
-display_img = repmat(uint8(clean_mask) * 255, [1 1 3]);  % binary → RGB
+% display_img = repmat(uint8(clean_mask) * 255, [1 1 3]);  % binary → RGB
+display_img = current;
 
 for k = 1:numel(intruders)
     bb = intruders(k).bbox;
@@ -79,6 +78,5 @@ else
 end
 
 imshow(display_img);
-
 % Turn off camera
 clear cam
